@@ -20,8 +20,8 @@ const App = () => {
   };
 
   return (
-    <div className="w-full flex">
-      <div className="w-1/2 flex justify-center items-center">
+    <div className="w-full flex justify-center">
+      <div className="w-1/2 hidden md:flex md:justify-center md:items-center  ">
         <img src={todo} alt="" />
       </div>
       <div className="flex justify-center items-center w-1/2 h-screen">

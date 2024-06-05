@@ -2,22 +2,38 @@ import { Button, Form, Input, List, Modal, Select } from "antd";
 import { useState, useEffect } from "react";
 import useLogout from "../hooks/useLogout";
 import { useSelector } from "react-redux";
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from "@ant-design/icons";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function Home() {
   const { Option } = Select;
   const [form] = Form.useForm();
   const [data2render, setData2Render] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [weatherData, setWeatherData] = useState(null);
 
   const { logout } = useLogout();
   const user = useSelector((state) => state.user.username);
 
   useEffect(() => {
+    weatherDataCall();
     const storedData = JSON.parse(localStorage.getItem("task")) || [];
     const filteredData = storedData.filter((item) => item.user === user);
     setData2Render(filteredData);
   }, [user]);
+
+  const weatherDataCall = async () => {
+    try {
+      const weatherData = await axios.post(
+        "https://api.openweathermap.org/data/2.5/weather?lat=29.7453&lon=78.5198&appid=f7e131e6385c761554551a6771f67aac"
+      );
+      console.log(weatherData.data);
+      setWeatherData(weatherData.data);
+    } catch (error) {
+      toast.error("Error Fetching Weather Data");
+    }
+  };
 
   const handleCancel = () => {
     form.resetFields();
@@ -63,7 +79,7 @@ function Home() {
   return (
     <div>
       <h1 className="text-3xl text-center font-bold">Welcome {user}!</h1>
-      <div className="flex justify-between  px-6">
+      <div className="flex justify-between mt-6 px-6">
         <Button type="primary" onClick={() => setIsModalOpen(!isModalOpen)}>
           +Create Task
         </Button>
@@ -81,22 +97,43 @@ function Home() {
                   onClick={() => handleDelete(index)}
                   icon={<DeleteOutlined className=" text-red-500" />}
                   className="border-red-500 "
-                >
-                </Button>,
+                ></Button>,
               ]}
             >
               <List.Item.Meta
-                title={ <h1 className=" "><span className="font-bold">Task:</span> {item.title}</h1> }
+                title={<h1 className=" font-bold ">Task: {item.title}</h1>}
                 description={
-                  <div className="overflow-auto max-h-40 "> <span className="font-bold text-black">Description:</span> {item.description}</div>
+                  <div className="overflow-auto max-h-40 ">
+                    {" "}
+                    <span className="font-bold text-black">
+                      Description:
+                    </span>{" "}
+                    {item.description}
+                  </div>
                 }
- 
               />
-              <div className="flex justify-start " > <span className="font-bold">Priority: {item.priority}</span></div>
+              <div className="flex flex-col justify-center md:flex-row gap-1 ">
+                <span className="font-bold">Priority: {item.priority}</span>
+                {weatherData && (
+                  <div className=" flex flex-col gap-1 md:flex-row">
+                    <span className=" hidden md:flex">||</span>
+                    <span className=" font-bold ">
+                      Weather:{weatherData.weather[0].description}
+                    </span>
+                    <span className=" hidden md:flex">||</span>
+                    <span className=" font-bold ">
+                      Humidity:{weatherData.main.humidity}%
+                    </span>
+                    <span className=" hidden md:flex">||</span>
+                    <span className=" font-bold ">
+                      Temperature:{weatherData.main.temp/10}°C
+                    </span>
+                  </div>
+                )}
+              </div>
             </List.Item>
           )}
         />
-        
       </div>
       <Modal
         title="Add Task"
