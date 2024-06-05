@@ -44,7 +44,7 @@ function Home() {
 
     setTimeout(() => {
       setIsModalOpen(false);
-    }, 1000);
+    }, 500);
     form.resetFields();
   };
 

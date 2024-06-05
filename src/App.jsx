@@ -12,22 +12,18 @@ import { useSelector } from "react-redux";
 export default function App() {
  
   const user = useSelector((state) => state.user.username);
-
-  console.log("redux:", user);
+  
   const appRouter = createBrowserRouter([
     {
       path: "/",
       element: user ? <Home /> : <Navigate to="/login" />,
-      // element: <Home />,
       errorElement: <ErrorPage />,
     },
     {
       path: "/login",
       element: user ? <Navigate to="/" /> : <Login />,
-      // element: <Login />,
     },
   ]);
-
 
 
   return (

@@ -15,11 +15,8 @@ function useLogin() {
       setLoading(true);
       localStorage.setItem("user", JSON.stringify({ username: username }));
       toast.success("login Successful");
-      setTimeout(() => {
-        navigate("/");
-        setLoading(false);
-      }, 2000);
-     
+      navigate("/");
+      setLoading(false);
     } catch (error) {
       toast.error("Error logging");
     }
