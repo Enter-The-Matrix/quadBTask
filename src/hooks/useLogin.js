@@ -9,7 +9,7 @@ function useLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const login = (username) => {
-    console.log("user:", username);
+    // console.log("user:", username);
     try {
       dispatch(setUser(username));
       setLoading(true);

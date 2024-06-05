@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const localData = JSON.parse(localStorage.getItem("user"))
-console.log("inside the slice:",localData);
+// console.log("inside the slice:",localData);
 
 const taskData = JSON.parse(localStorage.getItem("task"))
-console.log("inside thetask:",taskData);
+// console.log("inside thetask:",taskData);
 const userSlice = createSlice({
   name: "user",
   initialState: {

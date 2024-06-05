@@ -28,7 +28,7 @@ function Home() {
       const weatherData = await axios.post(
         "https://api.openweathermap.org/data/2.5/weather?lat=29.7453&lon=78.5198&appid=f7e131e6385c761554551a6771f67aac"
       );
-      console.log(weatherData.data);
+      // console.log(weatherData.data);
       setWeatherData(weatherData.data);
     } catch (error) {
       toast.error("Error Fetching Weather Data");
@@ -64,9 +64,7 @@ function Home() {
     form.resetFields();
   };
 
-  const onFinishFailed = (values) => {
-    console.log(values);
-  };
+ 
 
   const handleDelete = (index) => {
     setData2Render((prevData) => prevData.filter((_, i) => i !== index));
@@ -158,7 +156,6 @@ function Home() {
             remember: true,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item

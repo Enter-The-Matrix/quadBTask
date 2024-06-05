@@ -10,8 +10,8 @@ const App = () => {
   const onFinish = (values) => {
     const username = values.username;
     const password = values.password;
-    console.log(username);
-    console.log(password);
+    // console.log(username);
+    // console.log(password);
     if ((username == "admin" && password == "admin")||(username == "ashwani" && password == "ashwani")) {
       login(username);
     } else {
