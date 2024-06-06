@@ -29,6 +29,7 @@ function Home() {
         "https://api.openweathermap.org/data/2.5/weather?lat=29.7453&lon=78.5198&appid=f7e131e6385c761554551a6771f67aac"
       );
       // console.log(weatherData.data);
+      toast.success("Weather Data Fetched Successfully")
       setWeatherData(weatherData.data);
     } catch (error) {
       toast.error("Error Fetching Weather Data");
@@ -116,11 +117,11 @@ function Home() {
                   </div>
                 }
               />
-              <div className="flex flex-col justify-center md:flex-row gap-1 ">
+              <div className="flex flex-col justify-center md:flex-col gap-1 ">
                 <span className="font-bold">Priority: {item.priority}</span>
                 {weatherData && (
                   <div className=" flex flex-col gap-1 md:flex-row">
-                    <span className=" hidden md:flex">||</span>
+                    <span className=" font-semibold hidden md:flex">{`Weather Details =>`}</span>
                     <span className=" font-bold ">
                       Weather:{" "}{weatherData.weather[0].description}
                     </span>
