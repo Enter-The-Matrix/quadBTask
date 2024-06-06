@@ -1,10 +1,11 @@
 import { Button, Form, Input, List, Modal, Select } from "antd";
 import { useState, useEffect } from "react";
 import useLogout from "../hooks/useLogout";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { setTask } from "../store/slice/userSlice";
 
 function Home() {
   const { Option } = Select;
@@ -12,8 +13,13 @@ function Home() {
   const [data2render, setData2Render] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [weatherData, setWeatherData] = useState(null);
+  const [latitude, setLatitude] = useState(29.7453);
+  const [longitude, setLongitude] = useState(29.7453);
 
+  const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+  
   const { logout } = useLogout();
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.user.username);
 
   useEffect(() => {
@@ -23,29 +29,33 @@ function Home() {
     setData2Render(filteredData);
   }, [user]);
 
+  // calling open weather api
   const weatherDataCall = async () => {
     try {
       const weatherData = await axios.post(
-        "https://api.openweathermap.org/data/2.5/weather?lat=29.7453&lon=78.5198&appid=f7e131e6385c761554551a6771f67aac"
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
       );
-      // console.log(weatherData.data);
-      toast.success("Weather Data Fetched Successfully")
+      console.log(weatherData.data);
+      toast.success("Weather Data Fetched Successfully");
       setWeatherData(weatherData.data);
     } catch (error) {
       toast.error("Error Fetching Weather Data");
     }
   };
 
+  // to close modal
   const handleCancel = () => {
     form.resetFields();
     setIsModalOpen(false);
   };
 
+  //to handle logout
   const handleLogout = () => {
     setData2Render([]);
     logout();
   };
 
+  // to handle the add task functionality from modal
   const onFinish = (values) => {
     const newData = {
       user: user,
@@ -59,14 +69,16 @@ function Home() {
     setData2Render((prevData) => [...prevData, newData]);
     localStorage.setItem("task", JSON.stringify(updatedData));
 
+    dispatch(setTask(updatedData));
+
+    // to delay closing of modal
     setTimeout(() => {
       setIsModalOpen(false);
     }, 500);
     form.resetFields();
   };
 
- 
-
+  // to handle the delete functionality of the task
   const handleDelete = (index) => {
     setData2Render((prevData) => prevData.filter((_, i) => i !== index));
     localStorage.setItem(
@@ -100,13 +112,13 @@ function Home() {
               ]}
             >
               <List.Item.Meta
-                title={<div className="overflow-auto max-h-40 ">
-                {" "}
-                <span className="font-bold text-black">
-                  Title:
-                </span>{" "}
-                {item.title}
-              </div>}
+                title={
+                  <div className="overflow-auto max-h-40 ">
+                    {" "}
+                    <span className="font-bold text-black">Title:</span>{" "}
+                    {item.title}
+                  </div>
+                }
                 description={
                   <div className="overflow-auto max-h-40 ">
                     {" "}
@@ -123,15 +135,15 @@ function Home() {
                   <div className=" flex flex-col gap-1 md:flex-row">
                     <span className=" font-semibold hidden md:flex">{`Weather Details =>`}</span>
                     <span className=" font-bold ">
-                      Weather:{" "}{weatherData.weather[0].description}
+                      Weather: {weatherData.weather[0].description}
                     </span>
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                      Humidity:{" "}{(weatherData.main.humidity).toFixed(2)}%
+                      Humidity: {weatherData.main.humidity.toFixed(2)}%
                     </span>
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                    Temperature:{" "} {(weatherData.main.temp / 10).toFixed(2)}°C
+                      Temperature: {(weatherData.main.temp / 10).toFixed(2)}°C
                     </span>
                   </div>
                 )}
