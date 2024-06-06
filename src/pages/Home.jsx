@@ -120,11 +120,11 @@ function Home() {
                     </span>
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                      Humidity:{weatherData.main.humidity}%
+                      Humidity:{(weatherData.main.humidity).toFixed(2)}%
                     </span>
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                      Temperature:{weatherData.main.temp/10}°C
+                    Temperature: {(weatherData.main.temp / 10).toFixed(2)}°C
                     </span>
                   </div>
                 )}
