@@ -99,7 +99,13 @@ function Home() {
               ]}
             >
               <List.Item.Meta
-                title={<h1 className=" font-bold ">Task: {item.title}</h1>}
+                title={<div className="overflow-auto max-h-40 ">
+                {" "}
+                <span className="font-bold text-black">
+                  Title:
+                </span>{" "}
+                {item.title}
+              </div>}
                 description={
                   <div className="overflow-auto max-h-40 ">
                     {" "}
@@ -116,15 +122,15 @@ function Home() {
                   <div className=" flex flex-col gap-1 md:flex-row">
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                      Weather:{weatherData.weather[0].description}
+                      Weather:{" "}{weatherData.weather[0].description}
                     </span>
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                      Humidity:{(weatherData.main.humidity).toFixed(2)}%
+                      Humidity:{" "}{(weatherData.main.humidity).toFixed(2)}%
                     </span>
                     <span className=" hidden md:flex">||</span>
                     <span className=" font-bold ">
-                    Temperature: {(weatherData.main.temp / 10).toFixed(2)}°C
+                    Temperature:{" "} {(weatherData.main.temp / 10).toFixed(2)}°C
                     </span>
                   </div>
                 )}
